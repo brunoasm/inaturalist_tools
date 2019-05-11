@@ -29,3 +29,13 @@ This repository contains some code to interact with iNaturalist via the API usin
   `-d`, `--download`        Whether to download images (by default, only writes
                         URLs to output file). Images will be downloaded to a
                         folder with the same name as output file
+                        
+### Example
+
+All of these do the same:
+
+`python get_inaturalist_images.py --download "gorgulhos" weevils.txt`
+`python get_inaturalist_images.py --download "weevils" weevils.txt`
+`python get_inaturalist_images.py --download "Curculionoidea" weevils.txt`
+
+The result is a file named `weevils.txt` containing URLs for 100 weevil images and a folder named `weevils` containing the downloaded images.
