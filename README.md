@@ -1,6 +1,6 @@
 # iNaturalist tools
 
-This repository contains some code to interact with iNaturalist via the API using python programs:
+This repository contains some code to interact with iNaturalist via the API using Python:
 
 ## get_inaturalist_images.py 
 
