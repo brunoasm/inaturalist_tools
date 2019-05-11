@@ -34,8 +34,10 @@ This repository contains some code to interact with iNaturalist via the API usin
 
 All of these do the same:
 
-`python get_inaturalist_images.py --download "gorgulhos" weevils.txt`
-`python get_inaturalist_images.py --download "weevils" weevils.txt`
-`python get_inaturalist_images.py --download "Curculionoidea" weevils.txt`
+```
+python get_inaturalist_images.py --download "gorgulhos" weevils.txt
+python get_inaturalist_images.py --download "weevils" weevils.txt
+python get_inaturalist_images.py --download "Curculionoidea" weevils.txt
+```
 
 The result is a file named `weevils.txt` containing URLs for 100 weevil images and a folder named `weevils` containing the downloaded images.
