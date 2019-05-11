@@ -30,6 +30,10 @@ def retrieve_photos_for_id(taxon_id, max_obs, max_photos, image_size):
                            'per_page':0}).json()['total_results']
     #message
     print(str(int(n_res)) + ' observations with images found.', file=sys.stderr)
+    if n_res > 10000:
+        print('Limiting search to the most recent 10000 observations because of API limitations.', file=sys.stderr)
+        n_res = 10000
+        
     if n_res <= max_obs:
         print('Downloading up to ' + 
               str(max_photos) + 
@@ -106,7 +110,7 @@ if __name__ == "__main__":
     parser.add_argument('output', help = 'Output file path', default = 'output.txt')
     
     args = parser.parse_args()
-    #args = parser.parse_args(['urso polar']) #this is here for testing
+    #args = parser.parse_args(['caranguejo','crab']) #this is here for testing
     
     taxon_id = retrieve_taxon_id(args.name)
     photo_urls = retrieve_photos_for_id(taxon_id, 
