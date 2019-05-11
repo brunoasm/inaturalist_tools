@@ -72,6 +72,7 @@ def retrieve_photos_for_id(taxon_id, max_obs, max_photos, image_size):
         
     #finally, let's retrieve image urls
     all_img_urls = np.empty(len(all_obs_ids), dtype=object)
+    all_img_attribution = np.empty(len(all_obs_ids), dtype=object)
     i = 0
     
     for page in range(1, math.ceil(len(all_obs_ids) / 200)+1):
@@ -92,10 +93,13 @@ def retrieve_photos_for_id(taxon_id, max_obs, max_photos, image_size):
                     i += 1
                 else:                    
                     all_img_urls[i] = p['photo']['url'].replace('square',image_size)
+                    all_img_attribution[i] = p['photo']['attribution']
                     i+=1
     
+    idx_to_keep = [i for i in range(len(all_img_urls)) if all_img_urls[i] is not None]
     
-    return tuple([x for x in all_img_urls if x is not None])
+    return (tuple([all_img_attribution[i] for i in idx_to_keep]),
+            tuple([all_img_urls[i] for i in idx_to_keep]))
     
 
 if __name__ == "__main__":
@@ -113,7 +117,7 @@ if __name__ == "__main__":
     #args = parser.parse_args(['caranguejo','crab']) #this is here for testing
     
     taxon_id = retrieve_taxon_id(args.name)
-    photo_urls = retrieve_photos_for_id(taxon_id, 
+    attribution, photo_urls = retrieve_photos_for_id(taxon_id, 
                                         max_obs = args.observations, 
                                         max_photos = args.images, 
                                         image_size = args.size)
@@ -123,11 +127,17 @@ if __name__ == "__main__":
     if args.download:
         out_dir = os.path.splitext(os.path.basename(args.output))[0]
         print('Now downloading image files to ' + out_dir, file=sys.stderr)
-        os.makedirs(out_dir, exist_ok = True )
+        os.makedirs(out_dir, exist_ok = True)
+        ndigits = len(str(len(attribution)))
+        
+        with open(os.path.join(out_dir, 'attribution.txt'),'w') as outfile:
+            for i, x in enumerate(attribution):
+                print(str(i).zfill(ndigits) +
+                      '.jpg' + '\t' + x, file = outfile)
         
         for i, url in enumerate(photo_urls):
             res = requests.get(url, stream = True)
-            with open(os.path.join(out_dir,str(i) + '.jpg'), 'wb') as outfile:
+            with open(os.path.join(out_dir,str(i).zfill(ndigits) + '.jpg'), 'wb') as outfile:
                 shutil.copyfileobj(res.raw, outfile)
             del res
         
