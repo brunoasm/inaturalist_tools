@@ -40,4 +40,4 @@ python get_inaturalist_images.py --download "weevils" weevils.txt
 python get_inaturalist_images.py --download "Curculionoidea" weevils.txt
 ```
 
-The result is a file named `weevils.txt` containing URLs for 100 weevil images and a folder named `weevils` containing the downloaded images.
+The result is a file named `weevils.txt` containing URLs for 100 weevil images and a folder named `weevils` containing the downloaded images and their attributions.
