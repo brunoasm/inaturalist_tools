@@ -121,6 +121,11 @@ if __name__ == "__main__":
                                         max_obs = args.observations, 
                                         max_photos = args.images, 
                                         image_size = args.size)
+    
+    
+    out_path = os.path.dirname(args.output)
+    os.makedirs(out_path, exist_ok = True)
+    
     with open(args.output,'w') as outfile:
         outfile.write('\n'.join(photo_urls))
         
