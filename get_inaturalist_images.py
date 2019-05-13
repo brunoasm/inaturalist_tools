@@ -71,8 +71,8 @@ def retrieve_photos_for_id(taxon_id, max_obs, max_photos, image_size):
         all_obs_ids = tuple(np.random.choice(all_obs_ids, size = max_obs, replace = False))
         
     #finally, let's retrieve image urls
-    all_img_urls = np.empty(len(all_obs_ids), dtype=object)
-    all_img_attribution = np.empty(len(all_obs_ids), dtype=object)
+    all_img_urls = np.empty(len(all_obs_ids) * max_photos, dtype=object)
+    all_img_attribution = np.empty(len(all_obs_ids) * max_photos, dtype=object)
     i = 0
     
     for page in range(1, math.ceil(len(all_obs_ids) / 200)+1):
@@ -105,10 +105,10 @@ def retrieve_photos_for_id(taxon_id, max_obs, max_photos, image_size):
 if __name__ == "__main__":
     
     #Let's start defining arguments
-    parser = argparse.ArgumentParser()
+    parser = argparse.ArgumentParser(formatter_class=argparse.ArgumentDefaultsHelpFormatter)
     parser.add_argument('name', help = 'Name of the organism to search')
-    parser.add_argument('-o','--observations', help = 'Maximum number of observations to download. Observations are randomly chosen if more than the maximum', default = 100)
-    parser.add_argument('-i', '--images', help = 'Maximum number of images per observation. Images are randomly chosen if more than the maximum', default = 1)
+    parser.add_argument('-o','--observations', type = int, help = 'Maximum number of observations to download. Observations are randomly chosen if more than the maximum', default = 100)
+    parser.add_argument('-i', '--images', type= int, help = 'Maximum number of images per observation. Images are randomly chosen if more than the maximum', default = 1)
     parser.add_argument('-s', '--size', help = 'Image size', choices=['original','medium','square'], default = 'medium')
     parser.add_argument('-d', '--download', help = 'Whether to download images (by default, only writes URLs to output file). Images will be downloaded to a folder with the same name as output file', action = 'store_true')
     parser.add_argument('output', help = 'Output file path', default = 'output.txt')
